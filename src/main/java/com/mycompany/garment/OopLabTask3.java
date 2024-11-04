@@ -33,10 +33,15 @@ class Garment {
 
 class Fabric {
 
-    public String id;
-    public String type;
-    public String color;
+    public String id, type, color;
     public double pricePerMeter;
+    
+    public Fabric(String id, String type, String color, double pricePerMeter) {
+        this.id = id;
+        this.type = type;
+        this.color = color;
+        this.pricePerMeter = pricePerMeter;
+    }
 
     double calculateCost(double meters) {
         double newPrice = pricePerMeter * meters;
