@@ -7,17 +7,23 @@ import java.util.Date;
 
 class Garment {
 
-    public String id;
-    public String name;
-    public String description;
-    public String size;
-    public String color;
+    public String id, name, description, size, color;
     public double price;
     public int stockQuantity;
 
     void updateStock(int quantity) {
         this.stockQuantity = quantity;
     }
+    
+    public Garment(String id, String name, String size, String color, double price, int stockQuantity) {
+        this.id = id;
+        this.name = name;
+        this.size = size;
+        this.color = color;
+        this.price = price;
+        this.stockQuantity = stockQuantity;
+    }
+
 
     double calculateDiscountPrice(double discountPercentage) {
         double discount = price * (discountPercentage / 100);
@@ -98,9 +104,11 @@ class Customer {
         System.out.println("Order Placed");
     }
 
-//    List<Order> viewOrders() {
-//        
-//    }
+    List<Order> viewOrders() {
+        
+        return null;
+        
+    }
 }
 
 class Inventory {
@@ -127,13 +135,7 @@ class Inventory {
 public class OopLabTask3 {
 
     public static void main(String[] args) {
-        Garment g1 = new Garment();
-        g1.name = "Silk";
-        g1.description = "Good Product";
-        g1.price= 600;
-        double x = g1.calculateDiscountPrice(10);
-        System.out.println(x);
-
+        
     }
 
 }
