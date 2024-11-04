@@ -74,12 +74,13 @@ class Supplier {
 class Order {
 
     public String orderId;
-    public Date orderDate;
+    Date orderDate = new Date();
     public List<Garment> garments = new ArrayList<>();
     private double totalAmount;
 
     void addGarment(Garment garment) {
         garments.add(garment);
+        totalAmount += garment.price;
     }
 
     double calculateTotalAmount() {
