@@ -6,11 +6,8 @@ import java.util.List;
 import java.util.Scanner;
 
 class Garment {
-    public String id;
-    public String name;
-    public String description;
-    public String size;
-    public String color;
+
+    public String id, name, description, size, color;
     public double price;
     public int stockQuantity;
 
@@ -29,14 +26,13 @@ class Garment {
     }
 
     double calculateDiscountPrice(double discountPercentage) {
-        return price - (price * (discountPercentage / 100));
+        return price - (price * discountPercentage / 100);
     }
 }
 
 class Fabric {
-    public String id;
-    public String type;
-    public String color;
+
+    public String id, type, color;
     public double pricePerMeter;
 
     public Fabric(String id, String type, String color, double pricePerMeter) {
@@ -52,9 +48,8 @@ class Fabric {
 }
 
 class Supplier {
-    public String id;
-    public String name;
-    public String contactInfo;
+
+    public String id, name, contactInfo;
     List<Fabric> suppliedFabric = new ArrayList<>();
 
     public Supplier(String id, String name, String contactInfo) {
@@ -73,6 +68,7 @@ class Supplier {
 }
 
 class Order {
+
     public String orderId;
     public Date orderDate;
     public List<Garment> garments = new ArrayList<>();
@@ -94,18 +90,14 @@ class Order {
 
     void printOrderDetails() {
         System.out.println("Order ID: " + orderId + ", Date: " + orderDate);
-        for (Garment g : garments) {
-            System.out.println("Name: " + g.name + ", Price: " + g.price + ", Description: " + g.description);
-        }
+        garments.forEach(g -> System.out.println("Name: " + g.name + ", Price: " + g.price + ", Description: " + g.description));
         System.out.println("Total Amount: " + totalAmount);
     }
 }
 
 class Customer {
-    public String customerId;
-    public String name;
-    public String email;
-    public String phone;
+
+    public String customerId, name, email, phone;
 
     public Customer(String customerId, String name, String email, String phone) {
         this.customerId = customerId;
@@ -121,6 +113,7 @@ class Customer {
 }
 
 class Inventory {
+
     List<Garment> garments = new ArrayList<>();
 
     void addGarment(Garment garment) {
@@ -132,10 +125,7 @@ class Inventory {
     }
 
     Garment findGarment(String id) {
-        for (Garment g : garments) {
-            if (g.id.equals(id)) return g;
-        }
-        return null;
+        return garments.stream().filter(g -> g.id.equals(id)).findFirst().orElse(null);
     }
 }
 
@@ -145,83 +135,78 @@ public class OopLabTask3 {
         Scanner scanner = new Scanner(System.in);
         Inventory inventory = new Inventory();
         List<Order> orders = new ArrayList<>();
-        
+
         while (true) {
-            System.out.println("\n--- Garment Management System ---");
-            System.out.println("1. Add Garment to Inventory");
-            System.out.println("2. View Garment in Inventory");
-            System.out.println("3. Place an Order");
-            System.out.println("4. View Orders");
-            System.out.println("5. Exit");
-            System.out.print("Select an option: ");
+            System.out.println("1. Add Garment\n2. View Garment\n3. Place Order\n4. View Orders\n");
             int choice = scanner.nextInt();
-            scanner.nextLine();  // consume newline
+            scanner.nextLine();
 
             switch (choice) {
-                case 1:
-                    System.out.print("Enter Garment ID: ");
+                case 1 -> {
+                    System.out.print("ID: ");
                     String id = scanner.nextLine();
-                    System.out.print("Enter Name: ");
+                    System.out.print("Name: ");
                     String name = scanner.nextLine();
-                    System.out.print("Enter Description: ");
-                    String description = scanner.nextLine();
-                    System.out.print("Enter Size: ");
+                    System.out.print("Description: ");
+                    String desc = scanner.nextLine();
+                    System.out.print("Size: ");
                     String size = scanner.nextLine();
-                    System.out.print("Enter Color: ");
+                    System.out.print("Color: ");
                     String color = scanner.nextLine();
-                    System.out.print("Enter Price: ");
+                    System.out.print("Price: ");
                     double price = scanner.nextDouble();
-                    System.out.print("Enter Stock Quantity: ");
-                    int stockQuantity = scanner.nextInt();
+                    System.out.print("Stock Quantity: ");
+                    int stock = scanner.nextInt();
                     scanner.nextLine();
-
-                    Garment garment = new Garment(id, name, description, size, color, price, stockQuantity);
+                    Garment garment = new Garment(id, name, desc, size, color, price, stock);
                     inventory.addGarment(garment);
-                    System.out.println("Garment added to inventory.");
-                    break;
-
-                case 2:
-                    System.out.print("Enter Garment ID to view: ");
-                    id = scanner.nextLine();
-                    Garment foundGarment = inventory.findGarment(id);
-                    if (foundGarment != null) {
-                        System.out.println("Name: " + foundGarment.name + ", Price: " + foundGarment.price + ", Stock: " + foundGarment.stockQuantity);
+                    System.out.println("Garment added.");
+                }
+                case 2 -> {
+                    System.out.print("Garment ID to View: ");
+                    String garmentId = scanner.nextLine();
+                    Garment garment = inventory.findGarment(garmentId);
+                    if (garment != null) {
+                        System.out.println("Name: " + garment.name);
+                        System.out.println("Description: " + garment.description);
+                        System.out.println("Price: " + garment.price);
+                        System.out.println("Stock Quantity: " + garment.stockQuantity);
+                        System.out.print("Enter discount percentage: ");
+                        double discount = scanner.nextDouble();
+                        System.out.println("Discounted Price: " + garment.calculateDiscountPrice(discount));
                     } else {
                         System.out.println("Garment not found.");
                     }
-                    break;
-
-                case 3:
-                    System.out.print("Enter Order ID: ");
+                }
+                case 3 -> {
+                    System.out.print("Order ID: ");
                     String orderId = scanner.nextLine();
                     Order order = new Order(orderId);
-
-                    System.out.print("Enter Garment ID to add to order: ");
-                    id = scanner.nextLine();
-                    Garment garmentToOrder = inventory.findGarment(id);
-                    if (garmentToOrder != null) {
-                        order.addGarment(garmentToOrder);
-                        orders.add(order);
-                        System.out.println("Garment added to order.");
-                    } else {
-                        System.out.println("Garment not found.");
+                    while (true) {
+                        System.out.print("Enter Garment ID to add to order or type 'done': ");
+                        String garmentId = scanner.nextLine();
+                        if (garmentId.equals("done")) {
+                            break;
+                        }
+                        Garment garment = inventory.findGarment(garmentId);
+                        if (garment != null) {
+                            order.addGarment(garment);
+                            System.out.println("Garment added to order.");
+                        } else {
+                            System.out.println("Garment not found.");
+                        }
                     }
-                    break;
-
-                case 4:
-                    for (Order ord : orders) {
-                        ord.printOrderDetails();
+                    orders.add(order);
+                    System.out.println("Order Total: " + order.calculateTotalAmount());
+                }
+                case 4 -> {
+                    System.out.println("--- Orders ---");
+                    for (Order order : orders) {
+                        order.printOrderDetails();
                     }
-                    break;
-
-                case 5:
-                    System.out.println("Exiting...");
-                    scanner.close();
-                    return;
-
-                default:
-                    System.out.println("Invalid option. Try again.");
-                    break;
+                }
+                default ->
+                    System.out.println("Invalid choice.");
             }
         }
     }
